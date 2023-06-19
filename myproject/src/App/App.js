@@ -1,26 +1,62 @@
-import kind from '@enact/core/kind';
-import ThemeDecorator from '@enact/sandstone/ThemeDecorator';
-import Panels from '@enact/sandstone/Panels';
+import kind from "@enact/core/kind";
+import { Panels } from "@enact/sandstone/Panels";
+import ThemeDecorator from "@enact/sandstone/ThemeDecorator";
+import Changeable from "@enact/ui/Changeable";
+import PropTypes from "prop-types";
 
-import MainPanel from '../views/MainPanel';
+import Detail from "../views/Detail";
+import List from "../views/List";
 
-import './attachErrorHandler';
+const kittens = ["Garfield", "Nermal", "Simba", "Nala", "Tiger", "Kitty"];
 
-import css from './App.module.less';
+const AppBase = kind({
+  name: "App",
 
-const App = kind({
-	name: 'App',
+  propTypes: {
+    index: PropTypes.number,
+    kitten: PropTypes.number,
+    onNavigate: PropTypes.func,
+    onSelectKitten: PropTypes.func,
+  },
 
-	styles: {
-		css,
-		className: 'app'
-	},
+  defaultProps: {
+    index: 0,
+    kitten: 0,
+  },
 
-	render: (props) => (
-		<Panels {...props}>
-			<MainPanel />
-		</Panels>
-	)
+  handlers: {
+    onSelectKitten: (ev, { onNavigate, onSelectKitten }) => {
+      if (onSelectKitten) {
+        onSelectKitten({
+          kitten: ev.index,
+        });
+      }
+
+      // navigate to the detail panel on selection
+      if (onNavigate) {
+        onNavigate({
+          //panel 이동
+          index: 1,
+        });
+      }
+    },
+  },
+
+  render: ({ index, kitten, onNavigate, onSelectKitten, ...rest }) => (
+    <Panels {...rest} index={index} onBack={onNavigate}>
+      <List onSelectKitten={onSelectKitten}>{kittens}</List>
+      <Detail name={kittens[kitten]} />
+    </Panels>
+  ),
 });
 
-export default ThemeDecorator(App);
+const App = Changeable(
+  { prop: "index", change: "onNavigate" },
+  Changeable(
+    { prop: "kitten", change: "onSelectKitten" },
+    ThemeDecorator(AppBase)
+  )
+);
+
+export default App;
+export { App, AppBase };
