@@ -37,11 +37,11 @@ const KittenBase = kind({
     },
   },
 
-  render: ({ className, children, onSelect, size, url, ...rest }) => {
+  render: ({ children, onSelect, size, url, ...rest }) => {
     delete rest.index;
 
     return (
-      <div className={className} onClick={onSelect}>
+      <div {...rest} onClick={onSelect}>
         <img src={url} alt="Kitten" width={size} height={size} />
         <div>{children}</div>
       </div>

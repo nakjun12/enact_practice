@@ -26,9 +26,7 @@ const AppBase = kind({
 
   handlers: {
     onSelectKitten: (ev, { onNavigate, onSelectKitten }) => {
-      //이벤트가 발동했을때 나오는 조건들
       if (onSelectKitten) {
-        // 인덱스를 저장한다
         onSelectKitten({
           kitten: ev.index,
         });
@@ -36,9 +34,7 @@ const AppBase = kind({
 
       // navigate to the detail panel on selection
       if (onNavigate) {
-        // 패널을 바꾼다
         onNavigate({
-          //panel 이동
           index: 1,
         });
       }
