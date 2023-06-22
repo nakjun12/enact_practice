@@ -41,7 +41,7 @@ const KittenBase = kind({
     delete rest.index;
 
     return (
-      <div className={className} onClick={onSelect}>
+      <div className={className} {...rest} onClick={onSelect}>
         <img src={url} alt="Kitten" width={size} height={size} />
         <div>{children}</div>
       </div>
